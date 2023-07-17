@@ -1,0 +1,16 @@
+.uploaderCfg {
+    --ctx-name: "uploader";
+  
+    --cfg-pubkey: var(--uploadcare-pubkey);
+  }
+  
+  .img-gallery {
+    margin-top: 1rem;
+    width: 100%;
+    display: grid;
+    grid-gap: 8px;
+  }
+  
+  .img-preview {
+    width: 300px;
+  }
