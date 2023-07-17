@@ -2,41 +2,44 @@ import React, { useState } from "react"
 
 const SingleFileUploader = () => {
   const [file, setFile] = useState<File | null>(null)
+  const [status, setStatus] = useState<
+    "initial" | "uploading" | "success" | "fail"
+  >("initial")
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
+      setStatus("initial")
       setFile(e.target.files[0])
     }
   }
 
   const handleUpload = async () => {
-    // We will fill this out later
     if (file) {
-        console.log("Uploading file...")
-    
-        const formData = new FormData()
-        formData.append("file", file)
-    
-        try {
-          // You can write the URL of your server or any other endpoint used for file upload
-          const result = await fetch("https://httpbin.org/post", {
-            method: "POST",
-            body: formData,
-          })
-    
-          const data = await result.json()
-    
-          console.log(data)
-        } catch (error) {
-          console.error(error)
-        }
+      setStatus("uploading")
+
+      const formData = new FormData()
+      formData.append("file", file)
+
+      try {
+        const result = await fetch("https://httpbin.org/post", {
+          method: "POST",
+          body: formData,
+        })
+
+        const data = await result.json()
+
+        console.log(data)
+        setStatus("success")
+      } catch (error) {
+        console.error(error)
+        setStatus("fail")
       }
+    }
   }
 
   return (
     <>
-      <div>
-        <h1>React File Upload</h1>
+      <div className="input-group">
         <label htmlFor="file" className="sr-only">
           Choose a file
         </label>
@@ -53,9 +56,27 @@ const SingleFileUploader = () => {
         </section>
       )}
 
-      {file && <button onClick={handleUpload}>Upload a file</button>}
+      {file && (
+        <button onClick={handleUpload} className="submit">
+          Upload a file
+        </button>
+      )}
+
+      <Result status={status} />
     </>
   )
+}
+
+const Result = ({ status }: { status: string }) => {
+  if (status === "success") {
+    return <p>✅ File uploaded successfully!</p>
+  } else if (status === "fail") {
+    return <p>❌ File upload failed!</p>
+  } else if (status === "uploading") {
+    return <p>⏳ Uploading selected file...</p>
+  } else {
+    return null
+  }
 }
 
 export default SingleFileUploader
