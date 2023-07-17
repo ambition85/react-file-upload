@@ -11,11 +11,32 @@ const SingleFileUploader = () => {
 
   const handleUpload = async () => {
     // We will fill this out later
+    if (file) {
+        console.log("Uploading file...")
+    
+        const formData = new FormData()
+        formData.append("file", file)
+    
+        try {
+          // You can write the URL of your server or any other endpoint used for file upload
+          const result = await fetch("https://httpbin.org/post", {
+            method: "POST",
+            body: formData,
+          })
+    
+          const data = await result.json()
+    
+          console.log(data)
+        } catch (error) {
+          console.error(error)
+        }
+      }
   }
 
   return (
     <>
       <div>
+        <h1>React File Upload</h1>
         <label htmlFor="file" className="sr-only">
           Choose a file
         </label>
