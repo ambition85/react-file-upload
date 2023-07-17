@@ -8,9 +8,9 @@ import "./UploadcareUploader.css";
 LR.registerBlocks(LR);
 
 const UploadcareUploader = () => {
-  const dataOutputRef = useRef<LR.DataOutput>();
+  // const dataOutputRef = useRef<LR.DataOutput>();
   const [files, setFiles] = useState<any[]>([]);
-  // const dataOutputRef = useRef<HTMLOutputElement>(null);
+  const dataOutputRef = useRef<HTMLOutputElement>(null);
 
   const handleUploaderEvent = useCallback((e: CustomEvent<any>) => {
     const { data } = e.detail;
